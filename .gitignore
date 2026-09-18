@@ -1,0 +1,24 @@
+# 依赖
+node_modules/
+
+# 构建产物
+packages/shared/dist/
+miniprogram-*/miniprogram/
+miniprogram-*/node_modules/
+cloudfunctions/*/index.js
+cloudfunctions/*/shared/
+cloudfunctions/*/src/shared/
+
+# 微信开发者工具 / 云开发
+project.private.config.json
+.tcb/
+
+# 日志与临时文件
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# 环境密钥
+.env
+.env.*

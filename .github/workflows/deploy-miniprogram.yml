@@ -1,0 +1,56 @@
+name: Upload Miniprogram Trial Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "miniprogram-customer/src/**"
+      - "miniprogram-staff/src/**"
+      - "packages/shared/**"
+      - "scripts/**"
+      - ".github/workflows/deploy-miniprogram.yml"
+  workflow_dispatch:
+    inputs:
+      app:
+        description: "上传哪个小程序"
+        type: choice
+        options:
+          - all
+          - customer
+          - staff
+        default: all
+
+concurrency:
+  group: deploy-miniprogram-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [customer, staff]
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.app == 'all' || inputs.app == matrix.app }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: |
+          npm run build:shared
+          node scripts/build-mm.mjs --build ${{ matrix.app }}
+
+      - name: Upload trial build via miniprogram-ci
+        env:
+          WX_APPID: ${{ matrix.app == 'customer' && vars.WX_CUSTOMER_APPID || vars.WX_STAFF_APPID }}
+          WX_PRIVATE_KEY: ${{ matrix.app == 'customer' && secrets.WX_CUSTOMER_PRIVATE_KEY || secrets.WX_STAFF_PRIVATE_KEY }}
+          VERSION: ${{ github.run_number }}
+          DESC: ${{ github.event.head_commit.message }}
+        run: node scripts/upload-mm.mjs ${{ matrix.app }}

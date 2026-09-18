@@ -1,0 +1,13 @@
+{
+  "name": "withdraw",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "description": "余额提现（人工审核 + 商户号企业付款到微信零钱）（ADR-0005）",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

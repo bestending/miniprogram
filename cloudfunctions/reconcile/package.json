@@ -1,0 +1,13 @@
+{
+  "name": "reconcile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "description": "日终自动对账（orders / rebate_balances / withdraw_requests 三源）（ADR-0015）",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

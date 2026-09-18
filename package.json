@@ -1,0 +1,35 @@
+{
+  "name": "invite-rebate-miniapp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "餐饮邀请码返利小程序 monorepo（顾客端 + 管理端 + 微信云函数），见 docs/adr/0012-repo-and-cicd.md",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "packages/*",
+    "miniprogram-customer",
+    "miniprogram-staff"
+  ],
+  "scripts": {
+    "build": "npm run build:shared && npm run build:mm && npm run build:cloud",
+    "build:shared": "node node_modules/typescript/lib/tsc.js -p packages/shared/tsconfig.json",
+    "build:mm": "node scripts/build-mm.mjs --build all",
+    "build:cloud": "node scripts/build-cloud.mjs",
+    "dev": "node scripts/dev.mjs",
+    "typecheck": "node scripts/typecheck.mjs",
+    "lint": "eslint .",
+    "link:mm": "node scripts/link-mm-npm.mjs",
+    "upload:mm": "node scripts/upload-mm.mjs",
+    "postinstall": "node scripts/link-mm-npm.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "chokidar": "^5.0.0",
+    "eslint": "^9.39.5",
+    "miniprogram-ci": "^2.1.31",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.70.0",
+    "wx-server-sdk": "^4.0.2"
+  }
+}

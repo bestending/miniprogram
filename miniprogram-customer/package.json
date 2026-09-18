@@ -1,0 +1,15 @@
+{
+  "name": "miniprogram-customer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "顾客端小程序（appid-A，ADR-0006/0011）",
+  "dependencies": {
+    "@vant/weapp": "^1.11.7",
+    "mobx-miniprogram": "^6.12.3",
+    "shared": "file:../packages/shared"
+  },
+  "devDependencies": {
+    "miniprogram-api-typings": "^5.2.3",
+    "typescript": "~5.9.3"
+  }
+}

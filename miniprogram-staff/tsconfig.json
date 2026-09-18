@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "miniprogram",
+    "types": ["miniprogram-api-typings"],
+    "lib": ["ES2020"],
+    "baseUrl": ".",
+    "rootDirs": ["src", "miniprogram"]
+  },
+  "include": ["src/**/*.ts"]
+}

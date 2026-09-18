@@ -1,0 +1,13 @@
+{
+  "name": "daily-task",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "description": "定时任务集合（5 个触发器，按 TriggerName 路由）（ADR-0015）",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

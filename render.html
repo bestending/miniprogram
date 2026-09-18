@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>餐饮邀请码返利小程序 · 整体架构与业务流程</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 15mm;
+  }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    color: #1f2328;
+    line-height: 1.65;
+    font-size: 11pt;
+    max-width: 100%;
+  }
+  h1 {
+    font-size: 22pt;
+    color: #0b3d91;
+    border-bottom: 2px solid #0b3d91;
+    padding-bottom: 6pt;
+    margin-top: 0;
+  }
+  h2 {
+    font-size: 16pt;
+    color: #0b3d91;
+    border-left: 4pt solid #0b3d91;
+    padding-left: 8pt;
+    margin-top: 18pt;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 13pt;
+    color: #0b3d91;
+    margin-top: 14pt;
+    page-break-after: avoid;
+  }
+  h4 {
+    font-size: 11.5pt;
+    color: #2f3640;
+    margin-top: 12pt;
+    page-break-after: avoid;
+  }
+  blockquote {
+    border-left: 4pt solid #0b3d91;
+    background: #f4f7fb;
+    padding: 8pt 12pt;
+    margin: 10pt 0;
+    color: #4b5563;
+    page-break-inside: avoid;
+  }
+  blockquote p:last-child { margin-bottom: 0; }
+  code {
+    background: #f4f4f4;
+    padding: 1pt 4pt;
+    border-radius: 3pt;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+  }
+  pre {
+    background: #1e2230;
+    color: #e4e6eb;
+    padding: 10pt 12pt;
+    border-radius: 6pt;
+    overflow-x: auto;
+    font-size: 9.5pt;
+    line-height: 1.4;
+    page-break-inside: avoid;
+    font-family: Consolas, "Courier New", monospace;
+    white-space: pre;
+  }
+  pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+  pre.ascii {
+    font-size: 8.5pt;
+    line-height: 1.2;
+  }
+  pre.csv {
+    font-size: 9pt;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 10pt 0;
+    page-break-inside: avoid;
+    font-size: 10pt;
+  }
+  th, td {
+    border: 1pt solid #c8ced6;
+    padding: 5pt 8pt;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #eef3fb;
+    color: #0b3d91;
+    font-weight: bold;
+  }
+  tbody tr:nth-child(even) td {
+    background: #fafbfc;
+  }
+  ul, ol {
+    padding-left: 22pt;
+  }
+  li { margin: 3pt 0; }
+  hr {
+    border: none;
+    border-top: 1pt dashed #c8ced6;
+    margin: 14pt 0;
+  }
+  strong { color: #0b3d91; }
+  em { color: #6b7280; }
+  .meta {
+    color: #6b7280;
+    font-size: 10pt;
+    border-left: 3pt solid #cbd5e1;
+    padding-left: 8pt;
+    margin: 6pt 0 14pt 0;
+  }
+</style>
+</head>
+<body>
+<div id="content">渲染中…</div>
+<script>
+/* ---- 极简 Markdown 渲染器(支持 GFM 表格、代码块、引用、列表) ---- */
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function inline(s) {
+  // 先提取行内代码
+  var codes = [];
+  s = s.replace(/`([^`]+)`/g, function(m, c) {
+    codes.push(c);
+    return "\u0001CODE_" + (codes.length - 1) + "\u0001";
+  });
+  s = escapeHtml(s);
+  s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+  s = s.replace(/(^|[^*])\*([^*]+)\*/g, "$1<em>$2</em>");
+  s = s.replace(/\u0001CODE_(\d+)\u0001/g, function(m, i) {
+    return "<code>" + escapeHtml(codes[+i]) + "</code>";
+  });
+  return s;
+}
+function render(md) {
+  var lines = md.split(/\r?\n/);
+  var out = [];
+  var i = 0;
+  function flushPara(buf) {
+    if (buf.length === 0) return;
+    out.push("<p>" + inline(buf.join(" ")) + "</p>");
+    buf.length = 0;
+  }
+  function parseTable(rows) {
+    // rows: array of cell-arrays; row[1] is separator (---)
+    if (rows.length < 2) return null;
+    var sep = rows[1];
+    if (!sep || !sep.every(function(c) { return /^\s*:?-{3,}:?\s*$/.test(c); })) return null;
+    var align = sep.map(function(c) {
+      var l = c.indexOf(":") === 0, r = c.lastIndexOf(":") === c.length - 1;
+      return l && r ? "center" : r ? "right" : "left";
+    });
+    var html = "<table><thead><tr>";
+    rows[0].forEach(function(c, j) {
+      html += '<th style="text-align:' + align[j] + '">' + inline(c.trim()) + "</th>";
+    });
+    html += "</tr></thead><tbody>";
+    for (var k = 2; k < rows.length; k++) {
+      html += "<tr>";
+      rows[k].forEach(function(c, j) {
+        html += '<td style="text-align:' + (align[j] || "left") + '">' + inline(c.trim()) + "</td>";
+      });
+      html += "</tr>";
+    }
+    html += "</tbody></table>";
+    return html;
+  }
+  function parseTableRow(line) {
+    var t = line.trim();
+    if (t[0] !== "|" && t[t.length - 1] !== "|") return null;
+    if (t[0] === "|") t = t.slice(1);
+    if (t[t.length - 1] === "|") t = t.slice(0, -1);
+    return t.split("|").map(function(c) { return c.trim(); });
+  }
+
+  var paraBuf = [];
+  while (i < lines.length) {
+    var line = lines[i];
+    // 围栏代码块 ```lang
+    var fence = /^```(\w*)\s*$/.exec(line);
+    if (fence) {
+      flushPara(paraBuf);
+      var lang = (fence[1] || "").toLowerCase();
+      var body = [];
+      i++;
+      while (i < lines.length && !/^```\s*$/.exec(lines[i])) {
+        body.push(lines[i]); i++;
+      }
+      i++; // skip ```
+      var cls = "";
+      if (lang === "csv") cls = ' class="csv"';
+      else if (lang === "ascii" || /[┌┐└┘─│]/.test(body.join("\n"))) cls = ' class="ascii"';
+      out.push("<pre" + cls + ">" + escapeHtml(body.join("\n")) + "</pre>");
+      continue;
+    }
+    // 标题
+    var h = /^(#{1,6})\s+(.*)$/.exec(line);
+    if (h) {
+      flushPara(paraBuf);
+      out.push("<h" + h[1].length + ">" + inline(h[2]) + "</h" + h[1].length + ">");
+      i++; continue;
+    }
+    // 分隔线
+    if (/^---+$/.test(line.trim())) {
+      flushPara(paraBuf);
+      out.push("<hr />"); i++; continue;
+    }
+    // 引用
+    if (/^>\s?/.test(line)) {
+      flushPara(paraBuf);
+      var qbuf = [];
+      while (i < lines.length && /^>\s?/.test(lines[i])) {
+        qbuf.push(lines[i].replace(/^>\s?/, ""));
+        i++;
+      }
+      out.push("<blockquote>" + qbuf.map(function(l) { return "<p>" + inline(l) + "</p>"; }).join("") + "</blockquote>");
+      continue;
+    }
+    // 表格(需要整段读)
+    if (/\|/.test(line) && i + 1 < lines.length && parseTableRow(line) && parseTableRow(lines[i+1])) {
+      flushPara(paraBuf);
+      var trows = [];
+      while (i < lines.length && parseTableRow(lines[i])) {
+        trows.push(parseTableRow(lines[i]));
+        i++;
+      }
+      var tbl = parseTable(trows);
+      if (tbl) { out.push(tbl); continue; }
+    }
+    // 无序列表
+    if (/^[\-\*]\s+/.test(line)) {
+      flushPara(paraBuf);
+      var ulbuf = [];
+      while (i < lines.length && /^[\-\*]\s+/.test(lines[i])) {
+        ulbuf.push(lines[i].replace(/^[\-\*]\s+/, ""));
+        i++;
+      }
+      out.push("<ul>" + ulbuf.map(function(l) { return "<li>" + inline(l) + "</li>"; }).join("") + "</ul>");
+      continue;
+    }
+    // 有序列表
+    if (/^\d+\.\s+/.test(line)) {
+      flushPara(paraBuf);
+      var olbuf = [];
+      while (i < lines.length && /^\d+\.\s+/.test(lines[i])) {
+        olbuf.push(lines[i].replace(/^\d+\.\s+/, ""));
+        i++;
+      }
+      out.push("<ol>" + olbuf.map(function(l) { return "<li>" + inline(l) + "</li>"; }).join("") + "</ol>");
+      continue;
+    }
+    // 空行
+    if (line.trim() === "") {
+      flushPara(paraBuf);
+      i++; continue;
+    }
+    // 普通段落(累积到下一个空行)
+    paraBuf.push(line);
+    i++;
+  }
+  flushPara(paraBuf);
+  return out.join("\n");
+}
+window.__render = render;
+</script>
+<script>
+(async function() {
+  // 同步读取本地 Markdown 文件:用 XHR 而不是 fetch,因为 fetch 受 CORS-style 限制
+  function loadFile(path) {
+    return new Promise(function(resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", path, true);
+      xhr.onload = function() {
+        if (xhr.status === 200 || xhr.status === 0) resolve(xhr.responseText);
+        else reject(new Error("HTTP " + xhr.status));
+      };
+      xhr.onerror = function() { reject(new Error("XHR failed")); };
+      xhr.send();
+    });
+  }
+  try {
+    var md = await loadFile("ARCHITECTURE.md");
+    document.getElementById("content").innerHTML = window.__render(md);
+    document.title = "餐饮邀请码返利小程序 · 整体架构与业务流程";
+    document.body.setAttribute("data-rendered", "1");
+  } catch (e) {
+    document.getElementById("content").innerHTML =
+      '<p style="color:red">加载失败:' + e.message + '</p>' +
+      '<pre>' + (e.stack || "") + '</pre>';
+  }
+})();
+</script>
+</body>
+</html>

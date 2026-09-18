@@ -1,0 +1,13 @@
+{
+  "name": "payment",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "description": "微信支付 v3：下单、退款、支付/退款回调（ADR-0002）",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

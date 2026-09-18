@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  typecheck-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build shared
+        run: npm run build:shared
+
+      - name: Type check（shared + 双小程序 + 云函数）
+        run: npm run typecheck
+
+      - name: Full build（小程序产物 + 云函数产物）
+        run: npm run build

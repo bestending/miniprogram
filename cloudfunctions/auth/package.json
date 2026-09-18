@@ -1,0 +1,13 @@
+{
+  "name": "auth",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "description": "店主一次性激活码激活、店员邀请码绑定、顾客 OpenID+手机号 注册（ADR-0013）",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

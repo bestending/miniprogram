@@ -1,0 +1,13 @@
+{
+  "name": "rebate",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "description": "邀请码生成/绑定/核销与返利计算（ADR-0001~0004）",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

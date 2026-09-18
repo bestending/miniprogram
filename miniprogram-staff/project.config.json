@@ -1,0 +1,24 @@
+{
+  "appid": "touristappid",
+  "projectname": "invite-rebate-staff",
+  "description": "管理端小程序（appid-B），拿到真值后替换 appid（ADR-0012）",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "miniprogram/",
+  "libVersion": "latest",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": false,
+    "urlCheck": false,
+    "useCompilerPlugins": false,
+    "ignoreUploadUnusedFiles": true,
+    "packNpmManually": true,
+    "packNpmRelationList": [
+      {
+        "packageJsonPath": "./package.json",
+        "miniprogramNpmDistDir": "./miniprogram/"
+      }
+    ]
+  }
+}

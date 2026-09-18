@@ -1,0 +1,13 @@
+{
+  "name": "export",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "description": "CSV 导出（订单/返利/提现明细，中文表头，UTF-8 with BOM）（ADR-0008）",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

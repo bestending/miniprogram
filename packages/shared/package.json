@@ -1,0 +1,14 @@
+{
+  "name": "shared",
+  "version": "0.1.0",
+  "private": true,
+  "description": "双小程序与云函数共享的领域类型、常量、校验器与工具（ADR-0011/0012）",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../node_modules/typescript/lib/tsc.js -p tsconfig.json"
+  }
+}

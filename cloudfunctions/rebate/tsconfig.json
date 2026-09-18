@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.cloud.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "."
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": []
+}

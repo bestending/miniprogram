@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/invite/index",
+    "pages/balance/index",
+    "pages/withdraw/index",
+    "pages/orders/index",
+    "pages/profile/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "邀请有礼",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f8fa"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

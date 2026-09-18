@@ -1,0 +1,6 @@
+{
+  "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
+  "envId": "YOUR_ENV_ID",
+  "version": "2.0",
+  "$comment": "YOUR_ENV_ID 替换为微信云开发环境 ID（ADR-0012：首期单环境 default）。CI 中通过 -e $ENV_ID 覆盖，不在此提交真值。"
+}

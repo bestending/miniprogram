@@ -1,0 +1,13 @@
+{
+  "name": "notify",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "description": "微信订阅消息 + 站内消息中心，含每日推送上限（ADR-0014）",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}
