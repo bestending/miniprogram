@@ -56,3 +56,11 @@ export async function updateDoc(
   };
   return res.stats?.updated ?? 0;
 }
+
+/** doc(id).remove → 实际删除条数 */
+export async function deleteDoc(collection: string, id: string): Promise<number> {
+  const res = (await db.collection(collection).doc(id).remove()) as unknown as {
+    stats: { removed: number };
+  };
+  return res.stats?.removed ?? 0;
+}

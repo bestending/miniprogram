@@ -8,6 +8,13 @@ import { applyWithdraw } from './handlers/applyWithdraw';
 import type { ApplyWithdrawEvent } from './handlers/applyWithdraw';
 import { releasePendingRebates } from './handlers/releasePendingRebates';
 import type { ReleasePendingRebatesEvent } from './handlers/releasePendingRebates';
+import { listWindows, createWindow, updateWindow, deleteWindow } from './handlers/windows';
+import type {
+  ListWindowsEvent,
+  CreateWindowEvent,
+  UpdateWindowEvent,
+  DeleteWindowEvent
+} from './handlers/windows';
 import type { RebateEvent } from './helpers';
 
 /**
@@ -29,6 +36,16 @@ export async function main(event: RebateEvent) {
         return await applyWithdraw(event as ApplyWithdrawEvent);
       case 'releasePendingRebates':
         return await releasePendingRebates(event as ReleasePendingRebatesEvent);
+
+      // ---- 节假日/活动窗口管理（仅店主）----
+      case 'listWindows':
+        return await listWindows(event as ListWindowsEvent);
+      case 'createWindow':
+        return await createWindow(event as CreateWindowEvent);
+      case 'updateWindow':
+        return await updateWindow(event as UpdateWindowEvent);
+      case 'deleteWindow':
+        return await deleteWindow(event as DeleteWindowEvent);
       default:
         return fail(AUTH_ERRORS.UNKNOWN_ACTION, `未知 action: ${event.action}`);
     }

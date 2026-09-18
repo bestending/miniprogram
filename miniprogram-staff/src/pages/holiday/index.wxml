@@ -1,3 +1,92 @@
 <view class="page">
-  <text>节假日配置（页面骨架，ADR-0011）</text>
+  <view class="header">
+    <view class="header-title">节假日配置</view>
+    <view class="header-sub">配置活动时段与返利比例，重叠时段取最高比例</view>
+  </view>
+
+  <button class="primary-btn" bindtap="openCreate">+ 新增活动</button>
+
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+  <view class="empty" wx:elif="{{windows.length === 0}}">暂无活动，点击上方新增</view>
+
+  <view class="list" wx:else>
+    <view class="item" wx:for="{{windows}}" wx:key="id">
+      <view class="item-main">
+        <view class="name">
+          <text class="tag {{item.enabled ? 'tag-on' : 'tag-off'}}">{{item.enabled ? '启用' : '停用'}}</text>
+          {{item.name}}
+        </view>
+        <view class="meta">{{item.typeLabel}} · {{item.startText}} ~ {{item.endText}}</view>
+        <view class="rate">返利比例 <text class="rate-num">{{item.rateText}}</text></view>
+      </view>
+      <view class="item-actions">
+        <switch
+          checked="{{item.enabled}}"
+          color="#07c160"
+          data-id="{{item.id}}"
+          bindchange="onToggle"
+          disabled="{{togglingId === item.id}}"
+        />
+        <button class="mini-btn" data-id="{{item.id}}" bindtap="openEdit">编辑</button>
+        <button
+          class="mini-btn danger"
+          data-id="{{item.id}}"
+          bindtap="onDelete"
+          loading="{{deletingId === item.id}}"
+        >删除</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="mask" wx:if="{{showForm}}" bindtap="closeForm">
+    <view class="modal" catchtap="">
+      <view class="modal-title">{{form.id ? '编辑活动' : '新增活动'}}</view>
+
+      <view class="field">
+        <text class="label">活动名称</text>
+        <input
+          class="input"
+          placeholder="如：国庆黄金周"
+          value="{{form.name}}"
+          data-field="name"
+          bindinput="onFieldInput"
+        />
+      </view>
+
+      <view class="field">
+        <text class="label">开始日期</text>
+        <picker mode="date" value="{{form.startDate}}" data-field="startDate" bindchange="onDateChange">
+          <view class="picker {{form.startDate ? '' : 'placeholder'}}">
+            {{form.startDate || '请选择开始日期'}}
+          </view>
+        </picker>
+      </view>
+
+      <view class="field">
+        <text class="label">结束日期</text>
+        <picker mode="date" value="{{form.endDate}}" data-field="endDate" bindchange="onDateChange">
+          <view class="picker {{form.endDate ? '' : 'placeholder'}}">
+            {{form.endDate || '请选择结束日期'}}
+          </view>
+        </picker>
+      </view>
+
+      <view class="field">
+        <text class="label">返利比例（0~1，如 0.15 = 15%）</text>
+        <input
+          class="input"
+          type="digit"
+          placeholder="0.1"
+          value="{{form.rateText}}"
+          data-field="rateText"
+          bindinput="onFieldInput"
+        />
+      </view>
+
+      <button class="btn" loading="{{saving}}" disabled="{{saving}}" bindtap="onSave">
+        {{form.id ? '保存' : '创建'}}
+      </button>
+      <button class="btn btn-ghost" bindtap="closeForm">取消</button>
+    </view>
+  </view>
 </view>
