@@ -147,5 +147,9 @@ Page({
 
   closeBalance() {
     this.setData({ balance: null, selectedCustomerId: '' });
+  },
+
+  noop() {
+    // 阻止弹窗内容区事件冒泡到遮罩层
   }
 });

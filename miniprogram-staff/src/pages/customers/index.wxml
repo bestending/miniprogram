@@ -39,7 +39,7 @@
   </view>
 
   <view class="mask" wx:if="{{balance}}" bindtap="closeBalance">
-    <view class="modal" catchtap="">
+    <view class="modal" catchtap="noop" catchtouchmove="noop">
       <view class="modal-title">顾客余额</view>
       <view class="modal-row">
         <text>可用</text>

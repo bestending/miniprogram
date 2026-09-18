@@ -122,6 +122,10 @@ Page({
     this.setData({ showForm: false });
   },
 
+  noop() {
+    // 阻止弹窗内容区的点击/触摸事件冒泡到遮罩层，避免误触发关闭
+  },
+
   onFieldInput(e: { currentTarget: { dataset: { field: string } }; detail: { value: string } }) {
     const field = e.currentTarget.dataset.field;
     this.setData({ [`form.${field}`]: e.detail.value } as Record<string, string>);

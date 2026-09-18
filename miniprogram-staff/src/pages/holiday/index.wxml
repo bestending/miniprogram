@@ -39,7 +39,7 @@
   </view>
 
   <view class="mask" wx:if="{{showForm}}" bindtap="closeForm">
-    <view class="modal" catchtap="">
+    <view class="modal" catchtap="noop" catchtouchmove="noop">
       <view class="modal-title">{{form.id ? '编辑活动' : '新增活动'}}</view>
 
       <view class="field">
