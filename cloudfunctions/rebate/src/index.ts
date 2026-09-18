@@ -1,30 +1,39 @@
-import { ok, fail } from './shared/result';
-
-interface CallEvent {
-  action?: string;
-  [key: string]: unknown;
-}
+import { fail } from './shared/result';
+import { AUTH_ERRORS } from './shared/errors';
+import { recordOrder } from './handlers/recordOrder';
+import type { RecordOrderEvent } from './handlers/recordOrder';
+import { getBalance } from './handlers/getBalance';
+import type { GetBalanceEvent } from './handlers/getBalance';
+import { applyWithdraw } from './handlers/applyWithdraw';
+import type { ApplyWithdrawEvent } from './handlers/applyWithdraw';
+import { releasePendingRebates } from './handlers/releasePendingRebates';
+import type { ReleasePendingRebatesEvent } from './handlers/releasePendingRebates';
+import type { RebateEvent } from './helpers';
 
 /**
- * 邀请码生成/绑定/核销与返利计算（ADR-0001~0004）。
- * 调用方通过 wx.cloud.callFunction({ data: { action, ...payload } }) 路由。
+ * 返利与余额云函数（ADR-0001~0005）。
+ * 调用方通过 wx.cloud.callFunction({ name: 'rebate', data: { action, ...payload } }) 路由。
  */
-export async function main(event: CallEvent) {
+export async function main(event: RebateEvent) {
   if (!event.action) {
-    return fail('missing_action', '云函数调用缺少 action 字段');
+    return fail(AUTH_ERRORS.MISSING_ACTION, '云函数调用缺少 action 字段');
   }
 
-  switch (event.action) {
-      case 'issueCode':
-        // TODO: 为首单用户生成 6 位邀请码（反作弊：首单领码）
-        return ok({ function: 'rebate', action: event.action });
-      case 'bindCode':
-        // TODO: 被邀请人绑定邀请码（一次绑定 + 同设备/IP/手机号硬互斥）
-        return ok({ function: 'rebate', action: event.action });
-      case 'verifyOrder':
-        // TODO: 到店核销，按返利窗口（节假日优先、其次月15日）锁定返利金额
-        return ok({ function: 'rebate', action: event.action });
-    default:
-      return fail('unknown_action', `未知 action: ${event.action}`);
+  try {
+    switch (event.action) {
+      case 'recordOrder':
+        return await recordOrder(event as RecordOrderEvent);
+      case 'getBalance':
+        return await getBalance(event as GetBalanceEvent);
+      case 'applyWithdraw':
+        return await applyWithdraw(event as ApplyWithdrawEvent);
+      case 'releasePendingRebates':
+        return await releasePendingRebates(event as ReleasePendingRebatesEvent);
+      default:
+        return fail(AUTH_ERRORS.UNKNOWN_ACTION, `未知 action: ${event.action}`);
+    }
+  } catch (e) {
+    console.error('[rebate] uncaught', e);
+    return fail(AUTH_ERRORS.INTERNAL_ERROR, '服务异常，请稍后重试');
   }
 }

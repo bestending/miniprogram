@@ -1,5 +1,5 @@
 import { WITHDRAW_THRESHOLD_YUAN, fenToYuanText } from 'shared';
-import { getCustomerLogin, callAuth, clearCustomerLogin } from '../../utils/customer-auth';
+import { getCustomerLogin, getCachedPhone, callAuth, clearCustomerLogin } from '../../utils/customer-auth';
 
 interface BalanceResult {
   ok: boolean;
@@ -65,7 +65,16 @@ Page({
     }
     this.setData({ submitting: true });
     try {
-      const res = await callAuth('applyWithdraw');
+      // applyWithdraw 在 rebate 云函数，需附带手机号+顾客短码（ADR-0016）
+      const login = getCustomerLogin();
+      const res = await wx.cloud.callFunction({
+        name: 'rebate',
+        data: {
+          action: 'applyWithdraw',
+          phone: getCachedPhone(),
+          customerCode: login?.customerCode || ''
+        }
+      });
       const result = res.result as { ok: boolean; message?: string };
       if (result?.ok) {
         wx.showToast({ title: '申请已提交', icon: 'success' });

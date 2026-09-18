@@ -1,4 +1,5 @@
 import { ok, fail } from './shared/result';
+import { cloud } from './shared/db';
 
 interface TimerEvent {
   TriggerName?: string;
@@ -32,8 +33,13 @@ export async function main(event: TimerEvent) {
 }
 
 async function creditT7(): Promise<Record<string, unknown>> {
-  // TODO: T+7 批量计入（每批 500 单 + 乐观锁 version）
-  return { todo: 'T+7 批量计入（每批 500 单 + 乐观锁 version）' };
+  // 调用 rebate 云函数的 releasePendingRebates，将满 T+7 的待定订单转入余额
+  const res = (await cloud.callFunction({
+    name: 'rebate',
+    data: { action: 'releasePendingRebates' }
+  })) as unknown as { result?: { ok?: boolean; data?: Record<string, unknown>; message?: string } };
+  if (res.result?.ok) return res.result.data ?? {};
+  return { error: res.result?.message || 'releasePendingRebates failed' };
 }
 
 async function notifyExpiring(): Promise<Record<string, unknown>> {
