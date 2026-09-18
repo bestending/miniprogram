@@ -1,4 +1,6 @@
 import { ok, fail } from './shared/result';
+import { importMeituanOrders } from './handlers/importOrders';
+import type { ImportMeituanOrdersEvent } from './handlers/importOrders';
 
 interface CallEvent {
   action?: string;
@@ -6,7 +8,7 @@ interface CallEvent {
 }
 
 /**
- * CSV 导出（订单/返利/提现明细，中文表头，UTF-8 with BOM）（ADR-0008）。
+ * 导入/导出云函数（ADR-0008）。
  * 调用方通过 wx.cloud.callFunction({ data: { action, ...payload } }) 路由。
  */
 export async function main(event: CallEvent) {
@@ -15,9 +17,11 @@ export async function main(event: CallEvent) {
   }
 
   switch (event.action) {
-      case 'exportCsv':
-        // TODO: 按日/周/月导出并写审计日志
-        return ok({ function: 'export', action: event.action });
+    case 'importMeituanOrders':
+      return await importMeituanOrders(event as ImportMeituanOrdersEvent);
+    case 'exportCsv':
+      // TODO: 按日/周/月导出并写审计日志
+      return ok({ function: 'export', action: event.action });
     default:
       return fail('unknown_action', `未知 action: ${event.action}`);
   }

@@ -8,6 +8,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "wx-server-sdk": "^4.0.2"
+    "wx-server-sdk": "^4.0.2",
+    "xlsx": "^0.18.5"
   }
 }
