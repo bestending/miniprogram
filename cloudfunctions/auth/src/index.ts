@@ -4,16 +4,22 @@ import { getSession } from './handlers/getSession';
 import { ownerActivate } from './handlers/ownerActivate';
 import { createStaffInvite } from './handlers/createStaffInvite';
 import { bindClerk } from './handlers/bindClerk';
-import { checkRegisterState } from './handlers/checkRegisterState';
-import { registerCustomer } from './handlers/registerCustomer';
-import { createCustomerInvite } from './handlers/createCustomerInvite';
-import { getMyInviteCode } from './handlers/getMyInviteCode';
+import { adminCreateCustomer } from './handlers/adminCreateCustomer';
+import type { AdminCreateCustomerEvent } from './handlers/adminCreateCustomer';
+import { customerLogin } from './handlers/customerLogin';
+import type { CustomerLoginEvent } from './handlers/customerLogin';
+import { getMyBalance } from './handlers/getMyBalance';
+import type { GetMyBalanceEvent } from './handlers/getMyBalance';
+import { getMyOrders } from './handlers/getMyOrders';
+import type { GetMyOrdersEvent } from './handlers/getMyOrders';
 import type { AuthEvent } from './helpers';
 
 /**
- * 认证云函数（ADR-0013）。
+ * 认证云函数（ADR-0013 + ADR-0016）。
  * 调用方通过 wx.cloud.callFunction({ name: 'auth', data: { action, ...payload } }) 路由。
- * 隐式会话模型：不发 token，前端缓存 SessionInfo，冷启动走 getSession 恢复。
+ *
+ * 店主/店员：隐式会话模型（ADR-0013），不发 token，前端缓存 SessionInfo，冷启动走 getSession 恢复。
+ * 顾客：手机号+顾客短码（ADR-0016），每次调用云函数都校验，无 token。
  */
 export async function main(event: AuthEvent) {
   if (!event.action) {
@@ -22,6 +28,7 @@ export async function main(event: AuthEvent) {
 
   try {
     switch (event.action) {
+      // ---- 店主 / 店员（微信隐式会话）----
       case 'getSession':
         return await getSession();
       case 'ownerActivate':
@@ -30,14 +37,19 @@ export async function main(event: AuthEvent) {
         return await createStaffInvite();
       case 'bindClerk':
         return await bindClerk(event);
-      case 'checkRegisterState':
-        return await checkRegisterState(event);
-      case 'registerCustomer':
-        return await registerCustomer(event);
-      case 'createCustomerInvite':
-        return await createCustomerInvite();
-      case 'getMyInviteCode':
-        return await getMyInviteCode();
+
+      // ---- 店员/店主代录入顾客 ----
+      case 'adminCreateCustomer':
+        return await adminCreateCustomer(event as AdminCreateCustomerEvent);
+
+      // ---- 顾客（手机号+短码登录，ADR-0016）----
+      case 'customerLogin':
+        return await customerLogin(event as CustomerLoginEvent);
+      case 'getMyBalance':
+        return await getMyBalance(event as GetMyBalanceEvent);
+      case 'getMyOrders':
+        return await getMyOrders(event as GetMyOrdersEvent);
+
       default:
         return fail(AUTH_ERRORS.UNKNOWN_ACTION, `未知 action: ${event.action}`);
     }

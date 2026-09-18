@@ -1,42 +1,72 @@
-import { getSession, refreshSession } from '../../utils/session';
+import { fenToYuanText } from 'shared';
+import { getCustomerLogin, setCustomerLogin, callAuth, clearCustomerLogin } from '../../utils/customer-auth';
+
+interface BalanceResult {
+  ok: boolean;
+  code?: string;
+  message?: string;
+  data?: {
+    customerId: string;
+    customerCode: string;
+    phoneMask: string;
+    available: number;
+    pending: number;
+    frozen: number;
+    totalConsumption: number;
+    inviteCode: string | null;
+    updatedAt: number | null;
+  };
+}
 
 Page({
   data: {
-    shortId: '',
-    loading: true
-  },
-
-  async onLoad() {
-    // 显式刷新会话，避免 onLaunch 异步 getSession 竞态
-    await refreshSession();
-    this.routeBySession();
+    loading: true,
+    phoneMask: '',
+    available: '0.00',
+    pending: '0.00',
+    frozen: '0.00',
+    inviteCode: ''
   },
 
   async onShow() {
-    await refreshSession();
-    this.setSessionInfo();
-  },
-
-  routeBySession() {
-    const session = getSession();
-    if (!session) {
-      wx.redirectTo({ url: '/pages/register/index' });
+    if (!getCustomerLogin()) {
+      wx.reLaunch({ url: '/pages/customer-login/index' });
       return;
     }
-    this.setSessionInfo();
+    await this.loadBalance();
   },
 
-  setSessionInfo() {
-    const session = getSession();
-    if (session?.customerId) {
-      this.setData({ shortId: session.customerId.slice(-4).toUpperCase(), loading: false });
-    } else {
+  async loadBalance() {
+    this.setData({ loading: true });
+    try {
+      const res = await callAuth('getMyBalance');
+      const result = res.result as BalanceResult;
+      if (!result?.ok || !result.data) {
+        // 凭证失效 → 清缓存跳登录
+        clearCustomerLogin();
+        wx.reLaunch({ url: '/pages/customer-login/index' });
+        return;
+      }
+      const d = result.data;
+      // 回填 customerId / phoneMask
+      setCustomerLogin({
+        customerId: d.customerId,
+        customerCode: d.customerCode,
+        phoneMask: d.phoneMask
+      });
+      this.setData({
+        phoneMask: d.phoneMask,
+        available: fenToYuanText(d.available),
+        pending: fenToYuanText(d.pending),
+        frozen: fenToYuanText(d.frozen),
+        inviteCode: d.inviteCode || '',
+        loading: false
+      });
+    } catch (e) {
+      console.error('[index] getMyBalance failed', e);
+      wx.showToast({ title: '网络异常', icon: 'none' });
       this.setData({ loading: false });
     }
-  },
-
-  goInvite() {
-    wx.navigateTo({ url: '/pages/invite/index' });
   },
 
   goBalance() {
@@ -51,7 +81,15 @@ Page({
     wx.navigateTo({ url: '/pages/withdraw/index' });
   },
 
-  goProfile() {
-    wx.navigateTo({ url: '/pages/profile/index' });
+  onLogout() {
+    wx.showModal({
+      title: '退出登录',
+      content: '退出后需要重新输入手机号和顾客编号才能继续，确定退出？',
+      success: (res) => {
+        if (!res.confirm) return;
+        clearCustomerLogin();
+        wx.reLaunch({ url: '/pages/customer-login/index' });
+      }
+    });
   }
 });

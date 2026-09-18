@@ -17,6 +17,8 @@ export interface Customer {
   unionid?: string;
   /** SHA256(phone + salt)，绝不存明文（ADR-0013） */
   phoneHash?: string;
+  /** 4 位数字短码，顾客登录凭证（ADR-0016），店主/店员无此字段 */
+  customerCode?: string;
   nickName?: string;
   role: UserRole;
   /** 绑定的邀请人 customerId（一次绑定，不可换码，ADR-0003） */
@@ -48,6 +50,17 @@ export interface SessionInfo {
   activationStatus?: CustomerActivationStatus;
   /** 是否已激活可进后台（owner 看 activationStatus==='active'，其他角色恒 true） */
   activated: boolean;
+}
+
+/**
+ * 顾客端登录凭证（ADR-0016：手机号+4 位短码，不持 openid，无 token）。
+ * 前端存 wx.storage，调云函数时回传 { phone, customerCode } 由云函数每次校验。
+ */
+export interface CustomerSessionInfo {
+  customerId: string;
+  customerCode: string;
+  /** 手机号脱敏：138****1234 */
+  phoneMask: string;
 }
 
 // ---------- 邀请码（ADR-0010） ----------
@@ -159,7 +172,7 @@ export interface WithdrawRequest {
 
 // ---------- 审计日志（ADR-0007/0010） ----------
 
-export type ActorRole = 'owner' | 'clerk' | 'system';
+export type ActorRole = 'owner' | 'clerk' | 'customer' | 'system';
 
 export interface AuditLog {
   _id: string;

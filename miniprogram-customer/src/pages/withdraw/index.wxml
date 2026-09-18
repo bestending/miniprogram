@@ -1,3 +1,18 @@
 <view class="page">
-  <text>提现申请（页面骨架，ADR-0011）</text>
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+  <block wx:else>
+    <view class="card">
+      <view class="label">可用余额</view>
+      <view class="amount">¥{{available}}</view>
+      <view class="tip">满 ¥{{threshold}} 可申请提现，每月提现上限 ¥100</view>
+    </view>
+    <button
+      class="btn {{canWithdraw ? '' : 'disabled'}}"
+      disabled="{{submitting || !canWithdraw}}"
+      loading="{{submitting}}"
+      bindtap="onSubmit"
+    >
+      申请提现
+    </button>
+  </block>
 </view>

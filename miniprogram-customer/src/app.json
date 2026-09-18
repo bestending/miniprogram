@@ -1,12 +1,10 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/register/index",
-    "pages/invite/index",
+    "pages/customer-login/index",
     "pages/balance/index",
-    "pages/withdraw/index",
     "pages/orders/index",
-    "pages/profile/index"
+    "pages/withdraw/index"
   ],
   "window": {
     "navigationBarTitleText": "邀请有礼",

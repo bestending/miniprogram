@@ -1,3 +1,24 @@
 <view class="page">
-  <text>返利余额（页面骨架，ADR-0011）</text>
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+  <block wx:else>
+    <view class="card">
+      <view class="row">
+        <text class="label">可用余额</text>
+        <text class="value primary">¥{{available}}</text>
+      </view>
+      <view class="row">
+        <text class="label">待定余额（T+7 中）</text>
+        <text class="value">¥{{pending}}</text>
+      </view>
+      <view class="row">
+        <text class="label">冻结余额</text>
+        <text class="value">¥{{frozen}}</text>
+      </view>
+      <view class="row">
+        <text class="label">累计消费</text>
+        <text class="value">¥{{totalConsumption}}</text>
+      </view>
+    </view>
+    <view class="tip">数据更新时间：{{updatedAt}}</view>
+  </block>
 </view>

@@ -8,6 +8,7 @@ export default tseslint.config(
       "packages/shared/dist/**",
       "miniprogram-*/miniprogram/**",
       "miniprogram-*/node_modules/**",
+      "miniprogram-*/miniprogram_npm/**",
       "cloudfunctions/*/shared/**",
       "cloudfunctions/*/src/shared/**",
       "cloudfunctions/*/index.js"

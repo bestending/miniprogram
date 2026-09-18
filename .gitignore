@@ -4,6 +4,7 @@ node_modules/
 # 构建产物
 packages/shared/dist/
 miniprogram-*/miniprogram/
+miniprogram-*/miniprogram_npm/
 miniprogram-*/node_modules/
 cloudfunctions/*/*.js
 cloudfunctions/*/*.js.map

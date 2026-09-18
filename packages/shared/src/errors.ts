@@ -22,12 +22,16 @@ export const AUTH_ERRORS = {
   STAFF_INVITE_IP_LIMIT: 'staff_invite_ip_limit',
   STAFF_ALREADY_BOUND: 'staff_already_bound',
 
-  // 顾客注册
+  // 顾客注册 / 登录（ADR-0016：手机号+4 位短码）
   CUSTOMER_ALREADY_REGISTERED: 'customer_already_registered',
   PHONE_ALREADY_BOUND: 'phone_already_bound',
   INVITE_CODE_NOT_FOUND: 'invite_code_not_found',
   INVITE_CODE_ALREADY_BOUND: 'invite_code_already_bound',
   PHONE_AUTH_FAILED: 'phone_auth_failed',
+  CUSTOMER_NOT_FOUND: 'customer_not_found',
+  CUSTOMER_CREDENTIAL_INVALID: 'customer_credential_invalid',
+  INVALID_ROLE_FOR_ADMIN_CREATE: 'invalid_role_for_admin_create',
+  INVALID_PHONE_FORMAT: 'invalid_phone_format',
 
   // 通用
   UNAUTHORIZED: 'unauthorized',

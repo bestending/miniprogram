@@ -79,11 +79,14 @@ export const WX_ENTERPRISE_PAY_USER_DAILY_LIMIT = 2;
 /** 企业付款费率（约 1%，资质准备用） */
 export const WX_ENTERPRISE_PAY_FEE_RATE = 0.01;
 
-// ---------- 邀请码 / 认证（ADR-0010/0013） ----------
+// ---------- 邀请码 / 认证（ADR-0010/0013/0016）----------
 
 export const INVITE_CODE_LENGTH = 6;
 
 export const STAFF_INVITE_CODE_LENGTH = 6;
+
+/** 顾客登录短码长度（ADR-0016：手机号+顾客短码） */
+export const CUSTOMER_CODE_LENGTH = 4;
 
 /** 店员邀请码有效期（分钟） */
 export const STAFF_INVITE_TTL_MINUTES = 10;
@@ -100,10 +103,13 @@ export const OWNER_ACTIVATION_MAX_FAILS = 3;
 /** 激活码失败锁定时长（小时） */
 export const OWNER_ACTIVATION_LOCK_HOURS = 24;
 
-// ---------- 会话与盐（ADR-0013 隐式会话） ----------
+// ---------- 会话与盐（ADR-0013 隐式会话 / ADR-0016 顾客短码） ----------
 
-/** 前端缓存会话信息的 storage key */
+/** 店主/店员前端缓存会话信息的 storage key */
 export const SESSION_STORAGE_KEY = 'session_info';
+
+/** 顾客端缓存登录凭证的 storage key（ADR-0016：手机号+顾客短码，无 token） */
+export const CUSTOMER_LOGIN_STORAGE_KEY = 'customer_login';
 
 /** 全局 phoneHash / activationCodeHash 用的盐，存云函数环境变量 */
 export const GLOBAL_SALT_ENV_KEY = 'GLOBAL_SALT';

@@ -1,3 +1,24 @@
 <view class="page">
-  <text>订单记录（页面骨架，ADR-0011）</text>
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+  <view class="empty" wx:elif="{{orders.length === 0}}">暂无订单记录</view>
+  <view class="list" wx:else>
+    <view class="item" wx:for="{{orders}}" wx:key="orderNo">
+      <view class="item-head">
+        <text class="order-no">{{item.orderNo}}</text>
+        <text class="status">{{item.statusLabel}}</text>
+      </view>
+      <view class="item-body">
+        <view class="line">
+          <text class="k">消费金额</text>
+          <text class="v">¥{{item.amount}}</text>
+        </view>
+        <view class="line">
+          <text class="k">返利金额</text>
+          <text class="v primary">¥{{item.rebateAmount}}</text>
+        </view>
+      </view>
+      <view class="item-foot">{{item.payTime}}</view>
+    </view>
+    <view class="total">共 {{total}} 条</view>
+  </view>
 </view>

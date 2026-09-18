@@ -1,24 +1,40 @@
 <view class="page">
   <view class="header">
     <view class="header-title">邀请有礼</view>
-    <view class="header-sub">顾客编号 · {{shortId}}</view>
+    <view class="header-sub">{{phoneMask}}</view>
   </view>
 
-  <view class="grid">
-    <view class="grid-item" bindtap="goInvite">
-      <view class="grid-icon primary">码</view>
-      <view class="grid-label">我的邀请码</view>
-      <view class="grid-sub">邀请好友拿返利</view>
+  <view class="balance-card" wx:if="{{!loading}}">
+    <view class="balance-label">可用余额</view>
+    <view class="balance-amount">¥{{available}}</view>
+    <view class="balance-detail">
+      <view class="detail-item">
+        <text class="detail-label">待定</text>
+        <text class="detail-value">¥{{pending}}</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">冻结</text>
+        <text class="detail-value">¥{{frozen}}</text>
+      </view>
+      <view class="detail-item" wx:if="{{inviteCode}}">
+        <text class="detail-label">邀请码</text>
+        <text class="detail-value code">{{inviteCode}}</text>
+      </view>
     </view>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+
+  <view class="grid">
     <view class="grid-item" bindtap="goBalance">
       <view class="grid-icon primary">¥</view>
-      <view class="grid-label">我的余额</view>
-      <view class="grid-sub">可用 / 待定 / 冻结</view>
+      <view class="grid-label">余额明细</view>
+      <view class="grid-sub">查看返利到账记录</view>
     </view>
     <view class="grid-item" bindtap="goOrders">
       <view class="grid-icon primary">单</view>
-      <view class="grid-label">我的订单</view>
-      <view class="grid-sub">查看消费记录</view>
+      <view class="grid-label">消费订单</view>
+      <view class="grid-sub">查看消费返利记录</view>
     </view>
     <view class="grid-item" bindtap="goWithdraw">
       <view class="grid-icon primary">提</view>
@@ -27,8 +43,7 @@
     </view>
   </view>
 
-  <view class="profile-link" bindtap="goProfile">
-    <text>个人中心</text>
-    <text class="arrow">›</text>
+  <view class="logout" bindtap="onLogout">
+    <text>退出登录</text>
   </view>
 </view>
