@@ -15,6 +15,8 @@ import type {
   UpdateWindowEvent,
   DeleteWindowEvent
 } from './handlers/windows';
+import { getRanking } from './handlers/ranking';
+import type { GetRankingEvent } from './handlers/ranking';
 import type { RebateEvent } from './helpers';
 
 /**
@@ -46,6 +48,10 @@ export async function main(event: RebateEvent) {
         return await updateWindow(event as UpdateWindowEvent);
       case 'deleteWindow':
         return await deleteWindow(event as DeleteWindowEvent);
+
+      // ---- 月度返利排行 ----
+      case 'getRanking':
+        return await getRanking(event as GetRankingEvent);
       default:
         return fail(AUTH_ERRORS.UNKNOWN_ACTION, `未知 action: ${event.action}`);
     }

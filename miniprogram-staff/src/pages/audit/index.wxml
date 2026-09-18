@@ -1,3 +1,43 @@
 <view class="page">
-  <text>审计日志（页面骨架，ADR-0011）</text>
+  <view class="header">
+    <view class="header-title">审计日志</view>
+    <view class="header-sub">所有操作留痕，不可篡改 · 共 {{total}} 条</view>
+  </view>
+
+  <view class="filter-bar">
+    <view
+      class="filter-item {{filterRole === '' ? 'active' : ''}}"
+      data-role=""
+      bindtap="onFilterTap"
+    >全部</view>
+    <view
+      class="filter-item {{filterRole === 'owner' ? 'active' : ''}}"
+      data-role="owner"
+      bindtap="onFilterTap"
+    >店主</view>
+    <view
+      class="filter-item {{filterRole === 'clerk' ? 'active' : ''}}"
+      data-role="clerk"
+      bindtap="onFilterTap"
+    >店员</view>
+    <view
+      class="filter-item {{filterRole === 'system' ? 'active' : ''}}"
+      data-role="system"
+      bindtap="onFilterTap"
+    >系统</view>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+  <view class="empty" wx:elif="{{logs.length === 0}}">暂无日志</view>
+
+  <view class="list" wx:else>
+    <view class="item" wx:for="{{logs}}" wx:key="id">
+      <view class="item-head">
+        <text class="action">{{item.actionLabel}}</text>
+        <text class="role">{{item.roleLabel}}</text>
+      </view>
+      <view class="meta">对象：{{item.targetType}} · {{item.timeText}}</view>
+      <view class="payload" wx:if="{{item.payloadText}}">{{item.payloadText}}</view>
+    </view>
+  </view>
 </view>

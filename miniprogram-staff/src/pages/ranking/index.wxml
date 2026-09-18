@@ -1,3 +1,23 @@
 <view class="page">
-  <text>邀请人排行（页面骨架，ADR-0011）</text>
+  <view class="header">
+    <view class="header-title">邀请人返利排行</view>
+    <view class="header-sub">{{monthLabel}} · 累计返利 TOP 10（待入账+已入账）</view>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+  <view class="empty" wx:elif="{{ranking.length === 0}}">本月暂无返利数据</view>
+
+  <view class="list" wx:else>
+    <view class="item" wx:for="{{ranking}}" wx:key="rank">
+      <view class="rank">
+        <text wx:if="{{item.medal}}">{{item.medal}}</text>
+        <text wx:else>{{item.rank}}</text>
+      </view>
+      <view class="main">
+        <view class="code">顾客编号 {{item.customerCode || '(未关联)'}}</view>
+        <view class="count">{{item.orderCount}} 笔有效订单</view>
+      </view>
+      <view class="amount">¥{{item.totalRebateText}}</view>
+    </view>
+  </view>
 </view>

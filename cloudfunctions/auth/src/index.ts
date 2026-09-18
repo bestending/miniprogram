@@ -14,6 +14,8 @@ import { getMyOrders } from './handlers/getMyOrders';
 import type { GetMyOrdersEvent } from './handlers/getMyOrders';
 import { listCustomers } from './handlers/listCustomers';
 import type { ListCustomersEvent } from './handlers/listCustomers';
+import { listAuditLogs } from './handlers/listAuditLogs';
+import type { ListAuditLogsEvent } from './handlers/listAuditLogs';
 import type { AuthEvent } from './helpers';
 
 /**
@@ -45,6 +47,8 @@ export async function main(event: AuthEvent) {
         return await adminCreateCustomer(event as AdminCreateCustomerEvent);
       case 'listCustomers':
         return await listCustomers(event as ListCustomersEvent);
+      case 'listAuditLogs':
+        return await listAuditLogs(event as ListAuditLogsEvent);
 
       // ---- 顾客（手机号+短码登录，ADR-0016）----
       case 'customerLogin':
