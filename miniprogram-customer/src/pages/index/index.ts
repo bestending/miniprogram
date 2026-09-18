@@ -1,18 +1,57 @@
-import { getSession } from '../../utils/session';
+import { getSession, refreshSession } from '../../utils/session';
 
 Page({
-  onLoad() {
-    this.routeBySession();
+  data: {
+    shortId: '',
+    loading: true
   },
-  onShow() {
+
+  async onLoad() {
+    // 显式刷新会话，避免 onLaunch 异步 getSession 竞态
+    await refreshSession();
     this.routeBySession();
   },
 
-  /** 已注册 → 留在首页（后续阶段实现邀请码/余额/提现入口）；未注册 → 去注册页 */
+  async onShow() {
+    await refreshSession();
+    this.setSessionInfo();
+  },
+
   routeBySession() {
     const session = getSession();
     if (!session) {
       wx.redirectTo({ url: '/pages/register/index' });
+      return;
     }
+    this.setSessionInfo();
+  },
+
+  setSessionInfo() {
+    const session = getSession();
+    if (session?.customerId) {
+      this.setData({ shortId: session.customerId.slice(-4).toUpperCase(), loading: false });
+    } else {
+      this.setData({ loading: false });
+    }
+  },
+
+  goInvite() {
+    wx.navigateTo({ url: '/pages/invite/index' });
+  },
+
+  goBalance() {
+    wx.navigateTo({ url: '/pages/balance/index' });
+  },
+
+  goOrders() {
+    wx.navigateTo({ url: '/pages/orders/index' });
+  },
+
+  goWithdraw() {
+    wx.navigateTo({ url: '/pages/withdraw/index' });
+  },
+
+  goProfile() {
+    wx.navigateTo({ url: '/pages/profile/index' });
   }
 });

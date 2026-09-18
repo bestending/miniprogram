@@ -1,3 +1,79 @@
 .page {
+  padding: 32rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: #f7f8fa;
+}
+
+.header {
+  padding: 16rpx 8rpx 24rpx;
+}
+
+.header-title {
+  font-size: 44rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.header-sub {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #8a8a8e;
+}
+
+.card {
+  margin-top: 24rpx;
+  padding: 32rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.card-desc {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #8a8a8e;
+  line-height: 1.5;
+}
+
+.code-display {
+  margin-top: 24rpx;
   padding: 24rpx;
+  background: #f7f8fa;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.code-text {
+  font-size: 56rpx;
+  font-weight: 700;
+  letter-spacing: 12rpx;
+  color: #07c160;
+  font-family: monospace;
+}
+
+.code-hint {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #8a8a8e;
+}
+
+.primary-btn,
+.secondary-btn {
+  margin-top: 24rpx;
+  width: 100%;
+}
+
+.secondary-btn {
+  color: #1d1d1f;
+  background: #f7f8fa;
 }

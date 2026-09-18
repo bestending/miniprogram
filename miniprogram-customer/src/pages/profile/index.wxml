@@ -1,3 +1,20 @@
 <view class="page">
-  <text>个人中心（页面骨架，ADR-0011）</text>
+  <view class="title">个人中心</view>
+
+  <view class="info-card">
+    <view class="info-row">
+      <text class="info-label">顾客编号</text>
+      <text class="info-value mono">{{customerId}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">角色</text>
+      <text class="info-value">{{roleLabel}}</text>
+    </view>
+  </view>
+
+  <view class="tip">
+    <text>手机号仅以哈希形式存储，无法在此查看明文。如需换绑请联系店主。</text>
+  </view>
+
+  <button class="logout-btn" type="warn" bindtap="onLogout">退出登录</button>
 </view>

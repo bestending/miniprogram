@@ -6,6 +6,8 @@ import { createStaffInvite } from './handlers/createStaffInvite';
 import { bindClerk } from './handlers/bindClerk';
 import { checkRegisterState } from './handlers/checkRegisterState';
 import { registerCustomer } from './handlers/registerCustomer';
+import { createCustomerInvite } from './handlers/createCustomerInvite';
+import { getMyInviteCode } from './handlers/getMyInviteCode';
 import type { AuthEvent } from './helpers';
 
 /**
@@ -32,6 +34,10 @@ export async function main(event: AuthEvent) {
         return await checkRegisterState(event);
       case 'registerCustomer':
         return await registerCustomer(event);
+      case 'createCustomerInvite':
+        return await createCustomerInvite();
+      case 'getMyInviteCode':
+        return await getMyInviteCode();
       default:
         return fail(AUTH_ERRORS.UNKNOWN_ACTION, `未知 action: ${event.action}`);
     }
