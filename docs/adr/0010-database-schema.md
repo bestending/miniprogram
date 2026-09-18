@@ -29,7 +29,7 @@ Accepted
 
 | 集合名 | 作用 | 关键字段 | 索引 |
 |---|---|---|---|
-| `customers` | 顾客身份 | `_id`, `openid`, `unionid`, `phoneHash`(SHA256), `nickName`, `inviterId`, `createdAt` | `openid`(唯一), `phoneHash`(唯一), `inviterId` |
+| `customers` | 顾客身份 | `_id`, `openid`, `unionid`, `phoneHash`(SHA256), `customerCode`(4位,仅顾客), `nickName`, `inviterId`, `createdAt` | `openid`(唯一), `phoneHash`(唯一), `customerCode`(唯一,仅 role=customer 有值), `inviterId` |
 | `rebate_codes` | 邀请码生命周期 | `_id`, `code`(6 位),`inviterId`, `newbieId`(绑定后填), `status`(`active`/`bound`/`used`/`expired`), `createdAt`, `boundAt`, `usedAt` | `code`(唯一), `inviterId`, `status` |
 | `orders` | 订单状态机 | `_id`, `orderNo`, `amount`, `newbieId`, `inviterId`, `codeId`, `payTime`, `verifyTime`, `rebateAmount`(待定), `rebateStatus`(`pending`/`confirmed`/`refunded`), `rebateWindowId`, `version`(乐观锁) | `orderNo`(唯一), `newbieId`, `inviterId`, `rebateStatus` |
 | `rebate_balances` | 返利余额(按邀请人聚合) | `_id`, `customerId`, `available`(可用), `pending`(T+7 中), `frozen`(过期前锁定), `expireSoonList`(90 天过期列表), `updatedAt` | `customerId`(唯一) |
