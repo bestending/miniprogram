@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/login/index",
+    "pages/activate/index",
     "pages/dashboard/index",
     "pages/holiday/index",
     "pages/withdraw-review/index",
@@ -12,6 +13,29 @@
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#f7f8fa"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#07c160",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/dashboard/index",
+        "text": "看板"
+      },
+      {
+        "pagePath": "pages/withdraw-review/index",
+        "text": "提现"
+      },
+      {
+        "pagePath": "pages/ranking/index",
+        "text": "排行"
+      },
+      {
+        "pagePath": "pages/audit/index",
+        "text": "审计"
+      }
+    ]
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

@@ -100,6 +100,17 @@ export const OWNER_ACTIVATION_MAX_FAILS = 3;
 /** 激活码失败锁定时长（小时） */
 export const OWNER_ACTIVATION_LOCK_HOURS = 24;
 
+// ---------- 会话与盐（ADR-0013 隐式会话） ----------
+
+/** 前端缓存会话信息的 storage key */
+export const SESSION_STORAGE_KEY = 'session_info';
+
+/** 全局 phoneHash / activationCodeHash 用的盐，存云函数环境变量 */
+export const GLOBAL_SALT_ENV_KEY = 'GLOBAL_SALT';
+
+/** 店员/顾客邀请码字符集（排除易混淆 0/O/I/1） */
+export const STAFF_INVITE_CODE_CHARS = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+
 // ---------- 通知（ADR-0014） ----------
 
 /** 订阅消息默认每日推送上限（店主可调 1/2/3/不限） */

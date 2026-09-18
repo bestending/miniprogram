@@ -5,9 +5,11 @@ node_modules/
 packages/shared/dist/
 miniprogram-*/miniprogram/
 miniprogram-*/node_modules/
-cloudfunctions/*/index.js
+cloudfunctions/*/*.js
+cloudfunctions/*/*.js.map
 cloudfunctions/*/shared/
 cloudfunctions/*/src/shared/
+cloudfunctions/*/handlers/
 
 # 微信开发者工具 / 云开发
 project.private.config.json

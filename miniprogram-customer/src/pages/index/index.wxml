@@ -1,3 +1,4 @@
 <view class="page">
-  <text>首页（页面骨架，ADR-0011）</text>
+  <view class="title">邀请有礼</view>
+  <view class="sub">首页（邀请码 / 余额 / 提现入口将在后续阶段实现）</view>
 </view>

@@ -1,9 +1,10 @@
 {
-  "appid": "touristappid",
+  "appid": "wxb7550c08b6411e2e",
   "projectname": "invite-rebate-staff",
-  "description": "管理端小程序（appid-B），拿到真值后替换 appid（ADR-0012）",
+  "description": "管理端小程序（appid-B，店主/店员，ADR-0006/0011）",
   "compileType": "miniprogram",
   "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
   "libVersion": "latest",
   "setting": {
     "es6": true,
@@ -19,6 +20,22 @@
         "packageJsonPath": "./package.json",
         "miniprogramNpmDistDir": "./miniprogram/"
       }
-    ]
-  }
+    ],
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "srcMiniprogramRoot": "miniprogram/",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  },
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
 }

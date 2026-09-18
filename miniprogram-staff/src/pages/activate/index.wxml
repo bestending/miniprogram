@@ -1,0 +1,21 @@
+<view class="page">
+  <view class="title">店主激活</view>
+  <view class="sub">请输入交付给您的 8 位一次性激活码（失败 3 次将锁定 24 小时）</view>
+  <input
+    class="code-input"
+    type="text"
+    maxlength="8"
+    placeholder="8 位激活码"
+    value="{{code}}"
+    bindinput="onInput"
+  />
+  <button
+    class="bind-btn"
+    type="warn"
+    loading="{{loading}}"
+    disabled="{{loading}}"
+    bindtap="onActivate"
+  >
+    激活
+  </button>
+</view>

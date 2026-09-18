@@ -1,5 +1,5 @@
 {
-  "appid": "touristappid",
+  "appid": "wxb7550c08b6411e2e",
   "projectname": "invite-rebate-customer",
   "description": "顾客端小程序（appid-A），拿到真值后替换 appid（ADR-0012）",
   "compileType": "miniprogram",
@@ -19,6 +19,21 @@
         "packageJsonPath": "./package.json",
         "miniprogramNpmDistDir": "./miniprogram/"
       }
-    ]
+    ],
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "srcMiniprogramRoot": "miniprogram/",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
   }
 }

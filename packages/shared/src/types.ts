@@ -8,6 +8,9 @@
 
 export type UserRole = 'customer' | 'clerk' | 'owner';
 
+/** 店主激活状态：待激活 / 已激活 / 已锁定（ADR-0013） */
+export type CustomerActivationStatus = 'pending' | 'active' | 'locked';
+
 export interface Customer {
   _id: string;
   openid: string;
@@ -21,6 +24,30 @@ export interface Customer {
   /** 首登记设备指纹（同设备硬互斥，ADR-0003） */
   deviceId?: string;
   createdAt: number;
+  /** 店主激活状态（仅 role:'owner' 使用；customer/clerk 默认 'active'） */
+  activationStatus?: CustomerActivationStatus;
+  /** 店主激活码连续失败次数 */
+  activationFails?: number;
+  /** 店主激活码锁定到期时间戳（0 = 未锁） */
+  activationLockedUntil?: number;
+  /** 店主激活时间 */
+  activatedAt?: number;
+  /** 店员绑定时 IP（反查用） */
+  boundIp?: string;
+  /** 店主激活码哈希 SHA256(code + GLOBAL_SALT)，仅 role:'owner' pending 期持有 */
+  activationCodeHash?: string;
+}
+
+/**
+ * 前端缓存的会话信息（隐式会话模型，不暴露 openid，ADR-0013）。
+ * 由 auth 云函数 getSession 返回，前端写 storage 缓存。
+ */
+export interface SessionInfo {
+  customerId: string;
+  role: UserRole;
+  activationStatus?: CustomerActivationStatus;
+  /** 是否已激活可进后台（owner 看 activationStatus==='active'，其他角色恒 true） */
+  activated: boolean;
 }
 
 // ---------- 邀请码（ADR-0010） ----------

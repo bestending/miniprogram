@@ -29,7 +29,7 @@
   text-align: center;
 }
 
-.bind-btn {
+.phone-btn {
   margin-top: 40rpx;
   width: 100%;
 }

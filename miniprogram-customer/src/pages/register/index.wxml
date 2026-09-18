@@ -1,0 +1,25 @@
+<view class="page">
+  <view class="title">注册</view>
+  <view class="sub">输入邀请码并授权手机号完成绑定（一次绑定，不可更换）</view>
+
+  <input
+    class="code-input"
+    type="text"
+    maxlength="6"
+    placeholder="6 位邀请码"
+    value="{{inviteCode}}"
+    disabled="{{codeLocked}}"
+    bindinput="onCodeInput"
+  />
+
+  <button
+    class="phone-btn"
+    type="primary"
+    loading="{{loading}}"
+    disabled="{{loading}}"
+    open-type="getPhoneNumber"
+    bindgetphonenumber="onGetPhone"
+  >
+    微信授权 + 手机号绑定
+  </button>
+</view>

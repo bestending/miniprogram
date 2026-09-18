@@ -1,3 +1,21 @@
 <view class="page">
-  <text>登录（页面骨架，ADR-0011）</text>
+  <view class="title">店员绑定</view>
+  <view class="sub">请输入店主提供的 6 位邀请码（10 分钟内有效）</view>
+  <input
+    class="code-input"
+    type="text"
+    maxlength="6"
+    placeholder="6 位邀请码"
+    value="{{code}}"
+    bindinput="onInput"
+  />
+  <button
+    class="bind-btn"
+    type="primary"
+    loading="{{loading}}"
+    disabled="{{loading}}"
+    bindtap="onBind"
+  >
+    绑定
+  </button>
 </view>

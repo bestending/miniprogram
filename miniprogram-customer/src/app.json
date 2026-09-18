@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/register/index",
     "pages/invite/index",
     "pages/balance/index",
     "pages/withdraw/index",
