@@ -1,0 +1,63 @@
+<view class="page">
+  <view class="header">
+    <view class="header-title">录入订单</view>
+    <view class="header-sub">消费后录入，自动计算返利</view>
+  </view>
+
+  <view class="form">
+    <view class="field">
+      <text class="label">订单号</text>
+      <input
+        class="input"
+        placeholder="如 20260918001"
+        value="{{orderNo}}"
+        data-field="orderNo"
+        bindinput="onInput"
+      />
+    </view>
+
+    <view class="field">
+      <text class="label">消费金额（元）</text>
+      <input
+        class="input"
+        type="digit"
+        placeholder="如 88.00"
+        value="{{amountYuan}}"
+        data-field="amountYuan"
+        bindinput="onInput"
+      />
+    </view>
+
+    <view class="field">
+      <text class="label">顾客手机号</text>
+      <input
+        class="input"
+        type="number"
+        maxlength="11"
+        placeholder="11 位手机号"
+        value="{{newbiePhone}}"
+        data-field="newbiePhone"
+        bindinput="onInput"
+      />
+    </view>
+
+    <view class="field">
+      <text class="label">或顾客编号（4 位）</text>
+      <input
+        class="input"
+        type="number"
+        maxlength="4"
+        placeholder="手机号已知可留空"
+        value="{{newbieCustomerId}}"
+        data-field="newbieCustomerId"
+        bindinput="onInput"
+      />
+    </view>
+
+    <button class="btn" loading="{{loading}}" disabled="{{loading}}" bindtap="onSubmit">
+      录入订单
+    </button>
+
+    <view class="result" wx:if="{{lastResult}}">{{lastResult}}</view>
+  </view>
+</view>

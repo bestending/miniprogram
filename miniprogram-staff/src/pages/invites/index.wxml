@@ -1,0 +1,25 @@
+<view class="page">
+  <view class="header">
+    <view class="header-title">邀请码管理</view>
+    <view class="header-sub">店员邀请码（10 分钟有效）</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">店员邀请码</view>
+    <view class="card-desc">发给新店员，在登录页输入 6 位码完成绑定</view>
+
+    <view class="code-display" wx:if="{{code}}" bindtap="onCopy">
+      <text class="code-text">{{code}}</text>
+      <text class="code-hint">有效期至 {{expiresAtText}} · 点击复制</text>
+    </view>
+
+    <button
+      class="btn"
+      loading="{{generating}}"
+      disabled="{{generating}}"
+      bindtap="onCreate"
+    >
+      {{code ? '再生成一个' : '生成店员邀请码'}}
+    </button>
+  </view>
+</view>

@@ -3,8 +3,11 @@
     "pages/login/index",
     "pages/activate/index",
     "pages/dashboard/index",
-    "pages/holiday/index",
+    "pages/order-record/index",
+    "pages/customers/index",
+    "pages/invites/index",
     "pages/withdraw-review/index",
+    "pages/holiday/index",
     "pages/ranking/index",
     "pages/audit/index"
   ],
@@ -24,12 +27,12 @@
         "text": "看板"
       },
       {
-        "pagePath": "pages/withdraw-review/index",
-        "text": "提现"
+        "pagePath": "pages/order-record/index",
+        "text": "录单"
       },
       {
-        "pagePath": "pages/ranking/index",
-        "text": "排行"
+        "pagePath": "pages/withdraw-review/index",
+        "text": "提现"
       },
       {
         "pagePath": "pages/audit/index",

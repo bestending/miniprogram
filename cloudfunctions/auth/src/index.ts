@@ -12,6 +12,8 @@ import { getMyBalance } from './handlers/getMyBalance';
 import type { GetMyBalanceEvent } from './handlers/getMyBalance';
 import { getMyOrders } from './handlers/getMyOrders';
 import type { GetMyOrdersEvent } from './handlers/getMyOrders';
+import { listCustomers } from './handlers/listCustomers';
+import type { ListCustomersEvent } from './handlers/listCustomers';
 import type { AuthEvent } from './helpers';
 
 /**
@@ -41,6 +43,8 @@ export async function main(event: AuthEvent) {
       // ---- 店员/店主代录入顾客 ----
       case 'adminCreateCustomer':
         return await adminCreateCustomer(event as AdminCreateCustomerEvent);
+      case 'listCustomers':
+        return await listCustomers(event as ListCustomersEvent);
 
       // ---- 顾客（手机号+短码登录，ADR-0016）----
       case 'customerLogin':

@@ -1,3 +1,27 @@
 <view class="page">
-  <text>提现审核（页面骨架，ADR-0011）</text>
+  <view class="tabs">
+    <view class="tab {{tab === 'pending' ? 'active' : ''}}" data-tab="pending" bindtap="onTabChange">待审核</view>
+    <view class="tab {{tab === 'approved' ? 'active' : ''}}" data-tab="approved" bindtap="onTabChange">已通过</view>
+    <view class="tab {{tab === 'rejected' ? 'active' : ''}}" data-tab="rejected" bindtap="onTabChange">已拒绝</view>
+    <view class="tab {{tab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="onTabChange">全部</view>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+  <view class="empty" wx:elif="{{requests.length === 0}}">暂无记录</view>
+
+  <view class="list" wx:else>
+    <view class="item" wx:for="{{requests}}" wx:key="requestId">
+      <view class="row">
+        <text class="code">{{item.customerCode || item.customerId.slice(-4)}}</text>
+        <text class="status {{item.status}}">{{item.statusLabel}}</text>
+      </view>
+      <view class="amount">¥{{item.amountText}}</view>
+      <view class="meta">提交时间：{{item.submittedAtText}}</view>
+      <view class="meta" wx:if="{{item.rejectReason}}">拒绝原因：{{item.rejectReason}}</view>
+      <view class="actions" wx:if="{{item.status === 'pending'}}">
+        <button class="reject-btn" data-id="{{item.requestId}}" bindtap="onReject">拒绝</button>
+        <button class="approve-btn" data-id="{{item.requestId}}" bindtap="onApprove">通过</button>
+      </view>
+    </view>
+  </view>
 </view>

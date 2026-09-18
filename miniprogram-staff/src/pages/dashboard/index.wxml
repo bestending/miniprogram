@@ -1,33 +1,46 @@
 <view class="page">
   <view class="header">
-    <view class="header-title">实时看板</view>
-    <view class="header-sub">店主编号 · {{shortId}}</view>
+    <view class="header-title">门店运营后台</view>
+    <view class="header-sub">{{role === 'owner' ? '店主' : '店员'}} · {{shortId}}</view>
   </view>
 
-  <view class="card">
-    <view class="card-title">顾客邀请码</view>
-    <view class="card-desc">发给新顾客，扫码或输入 6 位码完成注册（长期有效）</view>
-    <view wx:if="{{customerInvite}}" class="code-display" bindtap="onCopyCode" data-code="{{customerInvite}}">
-      <text class="code-text">{{customerInvite}}</text>
-      <text class="code-hint">点击复制</text>
+  <view class="grid">
+    <view class="grid-item" bindtap="goOrderRecord">
+      <view class="grid-icon">录</view>
+      <view class="grid-label">录入订单</view>
     </view>
-    <button
-      class="primary-btn"
-      type="primary"
-      loading="{{generatingCustomer}}"
-      disabled="{{generatingCustomer}}"
-      bindtap="onGenerateCustomerInvite"
-    >
-      {{customerInvite ? '再生成一个' : '生成顾客邀请码'}}
-    </button>
+    <view class="grid-item" bindtap="goCustomers">
+      <view class="grid-icon">客</view>
+      <view class="grid-label">顾客管理</view>
+    </view>
+    <view class="grid-item" bindtap="goInvites">
+      <view class="grid-icon">码</view>
+      <view class="grid-label">邀请码</view>
+    </view>
+    <view class="grid-item" bindtap="goWithdrawReview">
+      <view class="grid-icon">提</view>
+      <view class="grid-label">提现审核</view>
+    </view>
+    <view class="grid-item" bindtap="goHoliday">
+      <view class="grid-icon">假</view>
+      <view class="grid-label">节假日</view>
+    </view>
+    <view class="grid-item" bindtap="goRanking">
+      <view class="grid-icon">榜</view>
+      <view class="grid-label">排行榜</view>
+    </view>
+    <view class="grid-item" bindtap="goAudit">
+      <view class="grid-icon">审</view>
+      <view class="grid-label">审计日志</view>
+    </view>
   </view>
 
-  <view class="card">
+  <view class="card" wx:if="{{role === 'owner'}}">
     <view class="card-title">店员邀请码</view>
     <view class="card-desc">发给新店员，10 分钟内有效</view>
-    <view wx:if="{{staffInvite}}" class="code-display" bindtap="onCopyCode" data-code="{{staffInvite}}">
+    <view wx:if="{{staffInvite}}" class="code-display" bindtap="onCopyCode">
       <text class="code-text">{{staffInvite}}</text>
-      <text class="code-hint">点击复制</text>
+      <text class="code-hint">有效期至 {{staffExpiresText}} · 点击复制</text>
     </view>
     <button
       class="secondary-btn"

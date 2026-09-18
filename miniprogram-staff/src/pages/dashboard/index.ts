@@ -1,50 +1,59 @@
 import { getSession } from '../../utils/session';
 
-interface InviteResult {
+interface StaffInviteResult {
   ok: boolean;
   code?: string;
   message?: string;
-  data?: { code: string; expiresAt?: number; unusedCount?: number };
+  data?: { code: string; expiresAt: number };
 }
 
 Page({
   data: {
     shortId: '',
-    generatingCustomer: false,
+    role: '',
     generatingStaff: false,
-    customerInvite: '',
-    staffInvite: ''
+    staffInvite: '',
+    staffExpiresText: ''
   },
 
   onShow() {
     const session = getSession();
-    if (session?.customerId) {
-      this.setData({ shortId: session.customerId.slice(-4).toUpperCase() });
+    if (!session) {
+      wx.reLaunch({ url: '/pages/login/index' });
+      return;
     }
+    this.setData({
+      shortId: session.customerId.slice(-4).toUpperCase(),
+      role: session.role
+    });
   },
 
-  async onGenerateCustomerInvite() {
-    if (this.data.generatingCustomer) return;
-    this.setData({ generatingCustomer: true });
-    try {
-      const res = await wx.cloud.callFunction({
-        name: 'auth',
-        data: { action: 'createCustomerInvite' }
-      });
-      const result = res.result as InviteResult;
-      if (!result?.ok || !result.data?.code) {
-        wx.showToast({ title: result?.message || '生成失败', icon: 'none' });
-        return;
-      }
-      this.setData({ customerInvite: result.data.code });
-      wx.setClipboardData({ data: result.data.code });
-      wx.showToast({ title: '已生成并复制', icon: 'success' });
-    } catch (e) {
-      console.error('[dashboard] createCustomerInvite failed', e);
-      wx.showToast({ title: '网络异常', icon: 'none' });
-    } finally {
-      this.setData({ generatingCustomer: false });
-    }
+  goOrderRecord() {
+    wx.switchTab({ url: '/pages/order-record/index' });
+  },
+
+  goCustomers() {
+    wx.navigateTo({ url: '/pages/customers/index' });
+  },
+
+  goInvites() {
+    wx.navigateTo({ url: '/pages/invites/index' });
+  },
+
+  goWithdrawReview() {
+    wx.switchTab({ url: '/pages/withdraw-review/index' });
+  },
+
+  goHoliday() {
+    wx.navigateTo({ url: '/pages/holiday/index' });
+  },
+
+  goRanking() {
+    wx.navigateTo({ url: '/pages/ranking/index' });
+  },
+
+  goAudit() {
+    wx.switchTab({ url: '/pages/audit/index' });
   },
 
   async onGenerateStaffInvite() {
@@ -55,14 +64,17 @@ Page({
         name: 'auth',
         data: { action: 'createStaffInvite' }
       });
-      const result = res.result as InviteResult;
-      if (!result?.ok || !result.data?.code) {
+      const result = res.result as StaffInviteResult;
+      if (result?.ok && result.data) {
+        this.setData({
+          staffInvite: result.data.code,
+          staffExpiresText: new Date(result.data.expiresAt).toLocaleString('zh-CN')
+        });
+        wx.setClipboardData({ data: result.data.code });
+        wx.showToast({ title: '已生成并复制', icon: 'success' });
+      } else {
         wx.showToast({ title: result?.message || '生成失败', icon: 'none' });
-        return;
       }
-      this.setData({ staffInvite: result.data.code });
-      wx.setClipboardData({ data: result.data.code });
-      wx.showToast({ title: '已生成并复制（10 分钟有效）', icon: 'success' });
     } catch (e) {
       console.error('[dashboard] createStaffInvite failed', e);
       wx.showToast({ title: '网络异常', icon: 'none' });
@@ -71,7 +83,8 @@ Page({
     }
   },
 
-  onCopyCode(e: { currentTarget: { dataset: { code: string } } }) {
-    wx.setClipboardData({ data: e.currentTarget.dataset.code });
+  onCopyCode() {
+    if (!this.data.staffInvite) return;
+    wx.setClipboardData({ data: this.data.staffInvite });
   }
 });

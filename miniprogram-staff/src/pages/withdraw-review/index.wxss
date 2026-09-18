@@ -1,3 +1,125 @@
 .page {
-  padding: 24rpx;
+  padding: 0 32rpx 32rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: #f7f8fa;
+}
+
+.tabs {
+  display: flex;
+  padding: 16rpx 0;
+  gap: 16rpx;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  font-size: 26rpx;
+  color: #8a8a8e;
+  background: #ffffff;
+  border-radius: 12rpx;
+}
+
+.tab.active {
+  color: #ffffff;
+  background: #07c160;
+  font-weight: 600;
+}
+
+.loading,
+.empty {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #8a8a8e;
+  font-size: 28rpx;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.item {
+  padding: 24rpx 28rpx;
+  background: #ffffff;
+  border-radius: 12rpx;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.code {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+  font-family: monospace;
+}
+
+.status {
+  font-size: 24rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.status.pending {
+  background: #fff7e6;
+  color: #fa8c16;
+}
+
+.status.approved {
+  background: #e6fffb;
+  color: #13c2c2;
+}
+
+.status.paid {
+  background: #f6ffed;
+  color: #52c41a;
+}
+
+.status.rejected {
+  background: #fff1f0;
+  color: #e64340;
+}
+
+.amount {
+  margin-top: 12rpx;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #07c160;
+}
+
+.meta {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #8a8a8e;
+}
+
+.actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 20rpx;
+}
+
+.reject-btn,
+.approve-btn {
+  flex: 1;
+  height: 64rpx;
+  line-height: 64rpx;
+  font-size: 26rpx;
+  border-radius: 8rpx;
+}
+
+.reject-btn {
+  background: #fff1f0;
+  color: #e64340;
+}
+
+.approve-btn {
+  background: #07c160;
+  color: #ffffff;
 }

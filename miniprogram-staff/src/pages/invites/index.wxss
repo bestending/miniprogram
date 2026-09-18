@@ -21,49 +21,11 @@
   color: #8a8a8e;
 }
 
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 16rpx;
-}
-
-.grid-item {
-  width: 31%;
-  margin-bottom: 20rpx;
-  padding: 32rpx 16rpx;
-  background: #ffffff;
-  border-radius: 16rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
-}
-
-.grid-icon {
-  width: 72rpx;
-  height: 72rpx;
-  line-height: 72rpx;
-  text-align: center;
-  font-size: 32rpx;
-  font-weight: 600;
-  color: #ffffff;
-  background: #07c160;
-  border-radius: 16rpx;
-}
-
-.grid-label {
-  margin-top: 12rpx;
-  font-size: 26rpx;
-  color: #1d1d1f;
-}
-
 .card {
-  margin-top: 24rpx;
+  margin-top: 16rpx;
   padding: 32rpx;
   background: #ffffff;
   border-radius: 16rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 }
 
 .card-title {
@@ -76,11 +38,12 @@
   margin-top: 8rpx;
   font-size: 24rpx;
   color: #8a8a8e;
+  line-height: 1.5;
 }
 
 .code-display {
   margin-top: 24rpx;
-  padding: 24rpx;
+  padding: 32rpx 24rpx;
   background: #f7f8fa;
   border-radius: 12rpx;
   display: flex;
@@ -97,14 +60,17 @@
 }
 
 .code-hint {
-  margin-top: 8rpx;
+  margin-top: 12rpx;
   font-size: 22rpx;
   color: #8a8a8e;
 }
 
-.secondary-btn {
+.btn {
   margin-top: 24rpx;
-  width: 100%;
-  color: #1d1d1f;
-  background: #f7f8fa;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: #07c160;
+  color: #ffffff;
+  border-radius: 12rpx;
+  font-size: 30rpx;
 }
